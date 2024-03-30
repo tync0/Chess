@@ -21,10 +21,10 @@ class Pixel extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: isWhite ? Colors.grey[500] : Colors.grey[800],
+          color: isWhite ? Colors.grey.shade500 : const Color(0XFf964d22),
           border: Border.all(
             color: selected ? Colors.green.shade400 : Colors.transparent,
-            width: 4,
+            width: 2.5,
           ),
         ),
         child: character != null

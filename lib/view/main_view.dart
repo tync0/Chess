@@ -28,50 +28,52 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[400],
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(),
-          ),
-          Expanded(
-            flex: 2,
-            child: Consumer<ChessPositions>(
-              builder: (context, value, child) => GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 64,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 8,
-                ),
-                itemBuilder: (context, index) {
-                  int x = index ~/ 8; // row
-                  int y = index % 8; // column
-                  bool isWhite = (x + y) % 2 == 0;
-                  //bool selected = selectedIndex == index;
-                  return Pixel(
-                    isWhite: isWhite,
-                    character: value.characterPositions[x][y],
-                    onTap: () {
-                      if (value.selectedIndex == index) {
-                        value.unSelected();
-                      } else {
-                        if (value.selectedIndex == -1) {
-                          value.selectItem(x, y);
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(),
+            ),
+            Expanded(
+              flex: 2,
+              child: Consumer<ChessPositions>(
+                builder: (context, value, child) => GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 64,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 8,
+                  ),
+                  itemBuilder: (context, index) {
+                    int x = index ~/ 8; // row
+                    int y = index % 8; // column
+                    bool isWhite = (x + y) % 2 == 0;
+                    //bool selected = selectedIndex == index;
+                    return Pixel(
+                      isWhite: isWhite,
+                      character: value.characterPositions[x][y],
+                      onTap: () {
+                        if (value.selectedIndex == index) {
+                          value.unSelected();
                         } else {
-                          value.changeCharacter(x, y, index);
+                          if (value.selectedIndex == -1) {
+                            value.selectItem(x, y);
+                          } else {
+                            value.changeCharacter(x, y, index);
+                          }
                         }
-                      }
-                    },
-                    selected: value.selectedItems.contains(index),
-                  );
-                },
+                      },
+                      selected: value.selectedItems.contains(index),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(),
-          ),
-        ],
+            Expanded(
+              child: Container(),
+            ),
+          ],
+        ),
       ),
     );
   }

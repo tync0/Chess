@@ -118,6 +118,7 @@ class ChessPositions extends ChangeNotifier {
   void selectItem(int row, int column) {
     if (characterPositions[row][column] != null) {
       selectedItem = characterPositions[row][column];
+      selectedItems.add(row * 8 + column);
       switch (selectedItem!.chessChar) {
         case ChessCharacterEnum.pawn:
           pawnPath(row, column);
@@ -126,6 +127,12 @@ class ChessPositions extends ChangeNotifier {
           knightPath(row, column);
           break;
         case ChessCharacterEnum.bishop:
+          bishopPath(row, column);
+          break;
+        case ChessCharacterEnum.rock:
+          rockPath(row, column);
+        case ChessCharacterEnum.queen:
+          rockPath(row, column);
           bishopPath(row, column);
           break;
         default:
@@ -158,15 +165,17 @@ class ChessPositions extends ChangeNotifier {
   }
 
   void pawnPath(int row, int column) {
-    selectedItems.add(row * 8 + column);
-    selectedItems.add((row - 1) * 8 + column);
-    selectedItems.add((row - 2) * 8 + column);
+    if (row == 6) {
+      selectedItems.add((row - 1) * 8 + column);
+      selectedItems.add((row - 2) * 8 + column);
+    } else {
+      selectedItems.add((row - 1) * 8 + column);
+    }
   }
 
   void knightPath(int row, int column) {
     selectedItems.addAll(
       [
-        row * 8 + column,
         (row - 2) * 8 + column - 1,
         (row - 2) * 8 + column + 1,
         (row - 1) * 8 + column + 2,
@@ -176,8 +185,68 @@ class ChessPositions extends ChangeNotifier {
   }
 
   void bishopPath(int row, int column) {
-    selectedItems.add(row * 8 + column);
-    selectedItems.add((row - 1) * 8 + column + 1);
-    selectedItems.add((row - 2) * 8 + column + 2);
+    int x = row - 1;
+    int y = column + 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      x -= 1;
+      y += 1;
+    }
+    x = row - 1;
+    y = column - 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      x -= 1;
+      y -= 1;
+    }
+    x = row + 1;
+    y = column + 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      x += 1;
+      y += 1;
+    }
+    x = row + 1;
+    y = column - 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      x += 1;
+      y -= 1;
+    }
+  }
+
+  void rockPath(int row, int column) {
+    int x = row - 1;
+    int y = column;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      x -= 1;
+    }
+    x = row + 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      x += 1;
+    }
+    x = row;
+    y = column + 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      y += 1;
+    }
+    y = column - 1;
+    while (checker(x, y)) {
+      selectedItems.add(x * 8 + y);
+      y -= 1;
+    }
+  }
+
+  bool checker(int row, int column) {
+    if ((row <= 7 && row >= 0) && (column <= 7 && column >= 0)) {
+      return true;
+    }
+    if (characterPositions[row][column] != null) {
+      return false;
+    }
+    return false;
   }
 }
