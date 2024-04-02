@@ -244,9 +244,7 @@ class ChessPositions extends ChangeNotifier {
     if ((row <= 7 && row >= 0) && (column <= 7 && column >= 0)) {
       return true;
     }
-    if (characterPositions[row][column] != null) {
-      return false;
-    }
+
     return false;
   }
 }

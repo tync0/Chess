@@ -24,7 +24,7 @@ class Pixel extends StatelessWidget {
           color: isWhite ? Colors.grey.shade500 : const Color(0XFf964d22),
           border: Border.all(
             color: selected ? Colors.green.shade400 : Colors.transparent,
-            width: 2.5,
+            width: 4,
           ),
         ),
         child: character != null
